@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Lethal
   layers:
   - Default
   - TransparentFX
@@ -40,4 +41,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Back
+    uniqueID: 549508367
+    locked: 0
+  - name: Middle
+    uniqueID: 1987631955
+    locked: 0
+  - name: Front
+    uniqueID: 1026733615
+    locked: 0
+  - name: Terrain
+    uniqueID: 3469357213
+    locked: 0
+  - name: Player
+    uniqueID: 3598409015
+    locked: 0
+  - name: Hazards
+    uniqueID: 3612759351
     locked: 0
