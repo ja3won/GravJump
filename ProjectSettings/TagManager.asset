@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Lethal
+  - CheckPoint
+  - Key
   layers:
   - Default
   - TransparentFX
@@ -47,6 +48,9 @@ TagManager:
     locked: 0
   - name: Back
     uniqueID: 549508367
+    locked: 0
+  - name: FadedBack
+    uniqueID: 704037981
     locked: 0
   - name: Middle
     uniqueID: 1987631955

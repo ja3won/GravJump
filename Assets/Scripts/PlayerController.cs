@@ -1,19 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : PhysicsBase
 {
-    [Header("Animation")]
     public Animator animator;
     public SpriteRenderer spriteRenderer;
     private bool isFacingRight = true;
+    public KeyManager km;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        CheckpointManager.Instance.RegisterPlayer(this);
     }
 
     void Update()
@@ -48,21 +45,13 @@ public class PlayerController : PhysicsBase
         }
     }
 
-    public void Collide(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Lethal"))
+        if (other.gameObject.CompareTag("Key"))
         {
-            CheckpointManager.Instance.Respawn();
+            Destroy(other.gameObject);
+            km.keyCount++;
         }
     }
 
-    public override void CollideHorizontal(Collider2D other)
-    {
-        Collide(other);
-    }
-
-    public override void CollideVertical(Collider2D other)
-    {
-        Collide(other);
-    }
 }
