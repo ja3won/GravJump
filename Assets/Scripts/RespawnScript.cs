@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class RespawnScript : MonoBehaviour
 {
-
     public GameObject player;
     public GameObject respawnPoint;
 
+    private PlayerController pcontroller;
+    // Start is called before the first frame update
     void Start()
     {
-        
+        pcontroller = player.GetComponent<PlayerController>();
     }
+
+    // Update is called once per frame
     void Update()
     {
 
@@ -19,7 +22,8 @@ public class RespawnScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            player.transform.position = respawnPoint.transform.position;
+            pcontroller.SetRespawnPoint(respawnPoint);
+            pcontroller.Die();
         }
     }
 }

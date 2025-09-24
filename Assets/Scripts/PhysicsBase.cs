@@ -8,9 +8,7 @@ public class PhysicsBase : MonoBehaviour
     public float gravityFactor;
     public float desiredx;
     public bool grounded;
-    private bool wasGrounded; // track previous tick grounded state for air control lock
 
-    // Start is called before the first frame update
     void Start()
     {
 
@@ -46,6 +44,7 @@ public class PhysicsBase : MonoBehaviour
         Vector2 move = velocity * Time.fixedDeltaTime;
         Movement(new Vector2(move.x, 0), true);
         Movement(new Vector2(0, move.y), false);
+
 
         if (!grounded)
         {

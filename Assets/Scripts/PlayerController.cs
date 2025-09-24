@@ -6,6 +6,13 @@ public class PlayerController : PhysicsBase
     public SpriteRenderer spriteRenderer;
     private bool isFacingRight = true;
     public KeyManager km;
+    private bool isDying = false; // lock controls while death anim plays
+    public GameObject respawnPoint;
+
+    public void SetRespawnPoint(GameObject point)
+    {
+        respawnPoint = point;
+    }
 
     void Start()
     {
@@ -15,6 +22,13 @@ public class PlayerController : PhysicsBase
 
     void Update()
     {
+        if (isDying)
+        {
+            desiredx = 0f;
+            velocity = Vector2.zero;
+            return;
+        }
+
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         desiredx = 0;
         if (horizontalInput > 0) desiredx = 6f;
@@ -54,4 +68,17 @@ public class PlayerController : PhysicsBase
         }
     }
 
+    public void Die()
+    {
+        if (isDying) return;
+        isDying = true;
+        animator.SetTrigger("isDead");
+    }
+
+    public void DeathAnimationDone()
+    {
+        transform.position = respawnPoint.transform.position;
+        isDying = false;
+        animator.SetTrigger("Revive");
+    }
 }
