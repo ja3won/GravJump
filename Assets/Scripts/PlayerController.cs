@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : PhysicsBase
 {
@@ -6,8 +7,10 @@ public class PlayerController : PhysicsBase
     public SpriteRenderer spriteRenderer;
     private bool isFacingRight = true;
     public KeyManager km;
-    private bool isDying = false; // lock controls while death anim plays
+    private bool noMove = false;
     public GameObject respawnPoint;
+
+    AudioManager audioManager;
 
     public void SetRespawnPoint(GameObject point)
     {
@@ -18,11 +21,12 @@ public class PlayerController : PhysicsBase
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     void Update()
     {
-        if (isDying)
+        if (noMove)
         {
             desiredx = 0f;
             velocity = Vector2.zero;
@@ -34,7 +38,11 @@ public class PlayerController : PhysicsBase
         if (horizontalInput > 0) desiredx = 6f;
         if (horizontalInput < 0) desiredx = -6f;
 
-        if (Input.GetButton("Jump") && grounded) velocity.y = 15f;
+        if (Input.GetButtonDown("Jump") && grounded)
+        {
+            velocity.y = 15f;
+            audioManager.PlaySFX(audioManager.jumpSFX);
+        }
 
         if (animator != null)
         {
@@ -65,20 +73,35 @@ public class PlayerController : PhysicsBase
         {
             Destroy(other.gameObject);
             km.keyCount++;
+            audioManager.PlaySFX(audioManager.collectingSFX);
         }
+
+        if (other.gameObject.CompareTag("EndPoint") && km.keyCount == 3)
+        {
+            if (noMove) return;
+            noMove = true;
+            audioManager.PlaySFX(audioManager.leavingSFX);
+            animator.SetTrigger("isComplete");
+        }
+    }
+
+    public void Leave()
+    {
+        SceneManager.LoadScene("WinScreen");
     }
 
     public void Die()
     {
-        if (isDying) return;
-        isDying = true;
+        if (noMove) return;
+        noMove = true;
+        audioManager.PlaySFX(audioManager.dyingSFX);
         animator.SetTrigger("isDead");
     }
 
     public void DeathAnimationDone()
     {
         transform.position = respawnPoint.transform.position;
-        isDying = false;
+        noMove = false;
         animator.SetTrigger("Revive");
     }
 }

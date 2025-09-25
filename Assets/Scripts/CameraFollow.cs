@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target; // The target for the camera to follow
-    public Vector3 offset; // Offset from the target position
+    public Transform target;
+    public Vector3 offset;
 
     [Range(1, 20)]
     public float smoothFactor;
